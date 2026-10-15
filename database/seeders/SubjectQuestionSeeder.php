@@ -5,9 +5,6 @@ namespace Database\Seeders;
 use App\Models\Answer;
 use App\Models\Question;
 use App\Models\Subject;
-use Database\Factories\AnswerFactory;
-use Database\Factories\QuestionFactory;
-use Database\Factories\SubjectFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -27,9 +24,11 @@ class SubjectQuestionSeeder extends Seeder
             $this->seedMatematika();
             $this->seedBahasaIndonesia();
             $this->seedIPA();
+            $this->seedPKn();
+            $this->seedBahasaInggris();
         });
 
-        $this->command->info("✓ Berhasil seed 3 Pelajaran, masing-masing 150 soal real!");
+        $this->command->info("✓ Berhasil seed 5 Pelajaran, masing-masing 150 soal!");
     }
 
     /**
@@ -407,14 +406,411 @@ class SubjectQuestionSeeder extends Seeder
     }
 
     /**
-     *
+     * 4. Pendidikan Kewarganegaraan (PKn)
+     */
+    private function seedPKn(): void
+    {
+        $pkn = Subject::factory()->create([
+            'name' => 'Pendidikan Kewarganegaraan',
+            'description' => 'Mata Pelajaran PKn (Pancasila, UUD 1945, Lembaga Negara, Hak dan Kewajiban, Pemilu, Otonomi Daerah, Wawasan Nusantara, HAM, Norma dan Hukum, Bela Negara)',
+            'is_active' => true,
+        ]);
+
+        // Format: [pertanyaan, jawaban benar, salah 1, salah 2, salah 3]
+        $soalPKn = [
+            // ===== Pancasila & Sejarah =====
+            ["Lambang sila pertama Pancasila adalah...", "Bintang", "Rantai", "Pohon beringin", "Kepala banteng"],
+            ["Lambang sila kedua Pancasila adalah...", "Rantai", "Bintang", "Padi dan kapas", "Pohon beringin"],
+            ["Lambang sila ketiga Pancasila adalah...", "Pohon beringin", "Kepala banteng", "Rantai", "Bintang"],
+            ["Lambang sila keempat Pancasila adalah...", "Kepala banteng", "Padi dan kapas", "Bintang", "Pohon beringin"],
+            ["Lambang sila kelima Pancasila adalah...", "Padi dan kapas", "Rantai", "Kepala banteng", "Bintang"],
+            ["Bunyi sila kedua Pancasila adalah...", "Kemanusiaan yang adil dan beradab", "Persatuan Indonesia", "Ketuhanan Yang Maha Esa", "Keadilan sosial bagi seluruh rakyat Indonesia"],
+            ["Bunyi sila ketiga Pancasila adalah...", "Persatuan Indonesia", "Kemanusiaan yang adil dan beradab", "Ketuhanan Yang Maha Esa", "Keadilan sosial bagi seluruh rakyat Indonesia"],
+            ["Bunyi sila keempat Pancasila adalah...", "Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/perwakilan", "Persatuan Indonesia", "Kemanusiaan yang adil dan beradab", "Keadilan sosial bagi seluruh rakyat Indonesia"],
+            ["Pancasila ditetapkan sebagai dasar negara Republik Indonesia pada tanggal...", "18 Agustus 1945", "1 Juni 1945", "17 Agustus 1945", "22 Juni 1945"],
+            ["Hari Lahir Pancasila diperingati setiap tanggal...", "1 Juni", "18 Agustus", "22 Juni", "1 Oktober"],
+            ["Hari Kesaktian Pancasila diperingati setiap tanggal...", "1 Oktober", "1 Juni", "10 November", "28 Oktober"],
+            ["Badan Penyelidik Usaha-usaha Persiapan Kemerdekaan Indonesia (BPUPKI) dibentuk oleh pemerintah...", "Jepang", "Belanda", "Inggris", "Amerika Serikat"],
+            ["Ketua BPUPKI adalah...", "dr. K.R.T. Radjiman Wedyodiningrat", "Ir. Soekarno", "Drs. Mohammad Hatta", "Mr. Soepomo"],
+            ["Panitia yang menghasilkan rumusan Piagam Jakarta dinamakan Panitia...", "Sembilan", "Delapan", "Lima", "Tujuh"],
+            ["Piagam Jakarta dirumuskan pada tanggal...", "22 Juni 1945", "1 Juni 1945", "17 Agustus 1945", "18 Agustus 1945"],
+            ["Ketua Panitia Persiapan Kemerdekaan Indonesia (PPKI) adalah...", "Ir. Soekarno", "Drs. Mohammad Hatta", "Mr. Ahmad Soebardjo", "Mr. Muhammad Yamin"],
+            ["Salah satu hasil sidang PPKI pada 18 Agustus 1945 adalah...", "Mengesahkan UUD 1945 dan memilih Presiden serta Wakil Presiden", "Membacakan teks proklamasi", "Membentuk BPUPKI", "Merumuskan Piagam Jakarta"],
+            ["Presiden pertama Republik Indonesia adalah...", "Ir. Soekarno", "Drs. Mohammad Hatta", "Soeharto", "B.J. Habibie"],
+            ["Wakil Presiden pertama Republik Indonesia adalah...", "Drs. Mohammad Hatta", "Sutan Syahrir", "Adam Malik", "Hamengkubuwono IX"],
+            ["Naskah teks proklamasi kemerdekaan Indonesia diketik oleh...", "Sayuti Melik", "Fatmawati", "Ahmad Soebardjo", "Sukarni"],
+            ["Bendera pusaka Sang Saka Merah Putih dijahit oleh...", "Fatmawati", "Hartini", "Rachmi Hatta", "Ratna Sari Dewi"],
+            ["Proklamasi kemerdekaan Indonesia dibacakan di...", "Jalan Pegangsaan Timur No. 56, Jakarta", "Gedung Sate, Bandung", "Istana Merdeka, Jakarta", "Lapangan Banteng, Jakarta"],
+            ["Sumpah Pemuda diikrarkan pada tanggal...", "28 Oktober 1928", "20 Mei 1908", "17 Agustus 1945", "10 November 1945"],
+            ["Hari Kebangkitan Nasional diperingati setiap tanggal...", "20 Mei", "28 Oktober", "17 Agustus", "2 Mei"],
+            ["Pencipta lagu kebangsaan Indonesia Raya adalah...", "W.R. Supratman", "Ismail Marzuki", "C. Simanjuntak", "H. Mutahar"],
+            ["Semboyan Bhinneka Tunggal Ika terdapat dalam kitab Sutasoma karya...", "Mpu Tantular", "Mpu Prapanca", "Mpu Sindok", "Mpu Kanwa"],
+            ["Makna semboyan Bhinneka Tunggal Ika adalah...", "Berbeda-beda tetapi tetap satu", "Satu nusa satu bangsa", "Bersatu kita teguh", "Gotong royong membangun negeri"],
+            ["Lambang negara Indonesia adalah...", "Garuda Pancasila", "Burung Cendrawasih", "Elang Jawa", "Burung Merpati"],
+            ["Jumlah bulu pada masing-masing sayap Garuda Pancasila melambangkan tanggal proklamasi, yaitu...", "17", "8", "45", "19"],
+            ["Pancasila sebagai dasar negara berarti Pancasila merupakan...", "Sumber dari segala sumber hukum negara", "Aturan adat istiadat", "Pedoman hidup perorangan saja", "Hukum yang berlaku di daerah"],
+            ["Pancasila sebagai ideologi terbuka berarti Pancasila...", "Mampu menyesuaikan perkembangan zaman tanpa mengubah nilai dasarnya", "Dapat diganti kapan saja", "Tidak boleh dikaji ulang", "Hanya berlaku untuk pemerintah"],
+            ["Rumusan Pancasila sebagai dasar negara tercantum dalam...", "Pembukaan UUD 1945 alinea keempat", "Pembukaan UUD 1945 alinea pertama", "Pasal 1 UUD 1945", "Penjelasan UUD 1945 pasal 33"],
+            ["Sikap yang sesuai dengan pengamalan sila pertama Pancasila adalah...", "Saling menghormati antarumat beragama", "Memaksakan agama kepada orang lain", "Mengejek ibadah agama lain", "Membeda-bedakan teman berdasarkan agama"],
+            ["Menolong korban bencana alam tanpa memandang suku dan agama merupakan pengamalan sila...", "Kedua", "Pertama", "Keempat", "Kelima"],
+            ["Mengutamakan kepentingan bangsa di atas kepentingan pribadi dan golongan merupakan pengamalan sila...", "Ketiga", "Kedua", "Keempat", "Kelima"],
+            ["Menyelesaikan masalah di kelas dengan musyawarah untuk mufakat merupakan pengamalan sila...", "Keempat", "Pertama", "Ketiga", "Kelima"],
+            ["Bersikap adil dan tidak pilih kasih terhadap teman merupakan pengamalan sila...", "Kelima", "Kedua", "Ketiga", "Keempat"],
+            ["Perilaku yang bertentangan dengan sila ketiga Pancasila adalah...", "Mengejek teman yang berbeda suku", "Mengikuti upacara bendera", "Bergotong royong membersihkan kelas", "Mencintai produk dalam negeri"],
+
+            // ===== UUD 1945 =====
+            ["UUD 1945 disahkan oleh PPKI pada tanggal...", "18 Agustus 1945", "17 Agustus 1945", "22 Juni 1945", "1 Juni 1945"],
+            ["UUD 1945 telah mengalami perubahan (amandemen) sebanyak...", "4 kali", "2 kali", "3 kali", "5 kali"],
+            ["Pasal 1 ayat (1) UUD 1945 menyatakan bahwa Indonesia ialah negara...", "Kesatuan yang berbentuk republik", "Serikat yang berbentuk federal", "Kerajaan konstitusional", "Persemakmuran"],
+            ["Pasal 1 ayat (2) UUD 1945 menyatakan bahwa kedaulatan berada di tangan...", "Rakyat dan dilaksanakan menurut Undang-Undang Dasar", "Presiden", "Dewan Perwakilan Rakyat", "Mahkamah Agung"],
+            ["Pasal 1 ayat (3) UUD 1945 menyatakan bahwa Indonesia adalah negara...", "Hukum", "Kekuasaan", "Agama", "Federal"],
+            ["Pasal 27 ayat (1) UUD 1945 mengatur tentang persamaan kedudukan warga negara dalam...", "Hukum dan pemerintahan", "Pendidikan", "Ekonomi", "Agama"],
+            ["Pasal 27 ayat (3) UUD 1945 mengatur tentang hak dan kewajiban warga negara dalam...", "Upaya pembelaan negara", "Memilih presiden", "Membayar pajak", "Memeluk agama"],
+            ["Hak asasi manusia diatur dalam UUD 1945 antara lain pada Pasal...", "28A sampai 28J", "30", "31", "33"],
+            ["Kebebasan memeluk agama dan beribadah menurut agamanya dijamin dalam Pasal...", "29", "30", "31", "33"],
+            ["Hak dan kewajiban warga negara dalam usaha pertahanan dan keamanan negara diatur dalam Pasal...", "30", "29", "31", "34"],
+            ["Hak warga negara untuk mendapatkan pendidikan diatur dalam Pasal...", "31", "30", "33", "34"],
+            ["Perekonomian nasional disusun sebagai usaha bersama berdasar atas asas kekeluargaan, hal ini terdapat dalam Pasal...", "33", "31", "34", "36"],
+            ["Fakir miskin dan anak-anak terlantar dipelihara oleh negara, sesuai Pasal...", "34", "33", "31", "30"],
+            ["Bahasa negara Republik Indonesia ialah Bahasa Indonesia, diatur dalam Pasal...", "36", "35", "37", "30"],
+            ["Pembukaan UUD 1945 alinea pertama berisi pernyataan bahwa...", "Kemerdekaan ialah hak segala bangsa dan penjajahan harus dihapuskan", "Tujuan negara Indonesia", "Dasar negara Pancasila", "Pernyataan atas berkat rahmat Allah Yang Maha Kuasa"],
+            ["Pernyataan 'Atas berkat rahmat Allah Yang Maha Kuasa' terdapat pada Pembukaan UUD 1945 alinea...", "Ketiga", "Pertama", "Kedua", "Keempat"],
+            ["Tujuan negara Indonesia terdapat pada Pembukaan UUD 1945 alinea...", "Keempat", "Pertama", "Kedua", "Ketiga"],
+            ["Salah satu tujuan negara Indonesia dalam Pembukaan UUD 1945 adalah...", "Mencerdaskan kehidupan bangsa", "Menguasai wilayah negara lain", "Mengembangkan sistem kerajaan", "Membentuk negara serikat"],
+            ["Bentuk negara Indonesia adalah...", "Kesatuan", "Federasi", "Serikat", "Konfederasi"],
+            ["Sistem pemerintahan yang dianut Indonesia adalah...", "Presidensial", "Parlementer", "Monarki absolut", "Diktator"],
+            ["Presiden dan Wakil Presiden memegang jabatan selama...", "Lima tahun dan sesudahnya dapat dipilih kembali hanya untuk satu kali masa jabatan", "Empat tahun dan dapat dipilih berkali-kali", "Seumur hidup", "Tujuh tahun tanpa pemilihan ulang"],
+            ["Presiden dan Wakil Presiden Indonesia dipilih langsung oleh rakyat untuk pertama kalinya pada tahun...", "2004", "1999", "1955", "2009"],
+
+            // ===== Lembaga Negara =====
+            ["Majelis Permusyawaratan Rakyat (MPR) terdiri atas anggota...", "DPR dan DPD", "DPR dan DPRD", "DPD dan DPRD", "DPR dan Mahkamah Agung"],
+            ["Fungsi Dewan Perwakilan Rakyat (DPR) adalah...", "Legislasi, anggaran, dan pengawasan", "Peradilan, eksekusi, dan anggaran", "Eksekutif, yudikatif, dan legislatif", "Pemilu, pajak, dan peradilan"],
+            ["Dewan Perwakilan Daerah (DPD) beranggotakan wakil dari setiap...", "Provinsi", "Kabupaten", "Kecamatan", "Partai politik"],
+            ["Lembaga negara yang berwenang menguji undang-undang terhadap UUD 1945 adalah...", "Mahkamah Konstitusi", "Mahkamah Agung", "DPR", "Komisi Yudisial"],
+            ["Lembaga yang berwenang menguji peraturan di bawah undang-undang terhadap undang-undang adalah...", "Mahkamah Agung", "Mahkamah Konstitusi", "DPD", "BPK"],
+            ["Lembaga yang bertugas menjaga kehormatan, keluhuran martabat, dan perilaku hakim adalah...", "Komisi Yudisial", "Mahkamah Konstitusi", "Kejaksaan Agung", "Komnas HAM"],
+            ["Lembaga yang bertugas memeriksa pengelolaan dan tanggung jawab keuangan negara adalah...", "Badan Pemeriksa Keuangan (BPK)", "Bank Indonesia", "Kementerian Keuangan", "Komisi Pemberantasan Korupsi"],
+            ["Ajaran pemisahan kekuasaan negara menjadi legislatif, eksekutif, dan yudikatif dikemukakan oleh...", "Montesquieu", "John Locke", "Aristoteles", "Jean Jacques Rousseau"],
+            ["Lembaga yang memegang kekuasaan eksekutif di Indonesia adalah...", "Presiden dan para menteri", "DPR", "Mahkamah Agung", "MPR"],
+            ["Lembaga yang memegang kekuasaan membuat undang-undang bersama Presiden adalah...", "DPR", "BPK", "Mahkamah Agung", "Kejaksaan"],
+            ["Kekuasaan kehakiman dilakukan oleh Mahkamah Agung dan badan peradilan di bawahnya serta oleh...", "Mahkamah Konstitusi", "Komisi Yudisial", "DPR", "Kepolisian"],
+            ["Pengadilan tingkat pertama untuk perkara pidana dan perdata umum adalah...", "Pengadilan Negeri", "Pengadilan Tinggi", "Mahkamah Agung", "Pengadilan Agama"],
+            ["Urutan hierarki peraturan perundang-undangan yang paling tinggi adalah...", "UUD 1945", "Undang-Undang", "Peraturan Pemerintah", "Peraturan Daerah"],
+            ["Peraturan yang ditetapkan Presiden untuk melaksanakan undang-undang adalah...", "Peraturan Pemerintah", "Peraturan Daerah", "Peraturan Menteri", "Ketetapan MPR"],
+            ["Peraturan Pemerintah Pengganti Undang-Undang (Perppu) dikeluarkan Presiden dalam keadaan...", "Kegentingan yang memaksa", "Normal", "Pemilu", "Sidang MPR"],
+            ["Peraturan Daerah (Perda) ditetapkan oleh...", "DPRD bersama kepala daerah", "Presiden", "MPR", "Menteri Dalam Negeri"],
+
+            // ===== Pemilu & Demokrasi =====
+            ["Asas pemilihan umum di Indonesia disingkat...", "LUBER JURDIL", "LUGAS JURDIL", "LUBER PANCA", "JURDIL SAKTI"],
+            ["Huruf 'R' pada asas LUBER dalam pemilu berarti...", "Rahasia", "Rakyat", "Resmi", "Rapi"],
+            ["Pemilihan umum di Indonesia diselenggarakan setiap...", "Lima tahun sekali", "Dua tahun sekali", "Tiga tahun sekali", "Sepuluh tahun sekali"],
+            ["Lembaga yang menyelenggarakan pemilihan umum di Indonesia adalah...", "Komisi Pemilihan Umum (KPU)", "Badan Pengawas Pemilu (Bawaslu)", "Mahkamah Konstitusi", "Kementerian Dalam Negeri"],
+            ["Lembaga yang bertugas mengawasi penyelenggaraan pemilu adalah...", "Bawaslu", "KPU", "DPR", "Mahkamah Agung"],
+            ["Syarat usia minimal warga negara untuk memiliki hak pilih adalah...", "17 tahun atau sudah/pernah menikah", "15 tahun", "18 tahun tanpa pengecualian", "21 tahun"],
+            ["Pemilu serentak tahun 2024 memilih...", "Presiden/Wakil Presiden, DPR, DPD, dan DPRD", "Presiden dan Gubernur saja", "DPR dan MPR saja", "Bupati dan Wali Kota saja"],
+            ["Pemilihan umum pertama di Indonesia dilaksanakan pada tahun...", "1955", "1945", "1971", "1999"],
+            ["Sikap tidak menggunakan hak pilih dalam pemilu disebut...", "Golput (golongan putih)", "Kampanye", "Koalisi", "Oposisi"],
+            ["Demokrasi secara harfiah berarti pemerintahan oleh...", "Rakyat", "Raja", "Kaum bangsawan", "Militer"],
+            ["Demokrasi yang dianut bangsa Indonesia adalah demokrasi...", "Pancasila", "Liberal", "Komunis", "Terpimpin"],
+            ["Menurut Abraham Lincoln, demokrasi adalah pemerintahan dari rakyat, oleh rakyat, dan...", "Untuk rakyat", "Atas rakyat", "Demi penguasa", "Bagi pemimpin"],
+            ["Musyawarah mufakat dalam demokrasi Pancasila bertujuan untuk...", "Mencapai keputusan bersama yang disepakati", "Memenangkan kelompok tertentu", "Memaksakan pendapat mayoritas", "Menunda pengambilan keputusan"],
+
+            // ===== Otonomi Daerah, Wawasan Nusantara & Ketahanan Nasional =====
+            ["Hak, wewenang, dan kewajiban daerah untuk mengatur dan mengurus sendiri urusan pemerintahan disebut...", "Otonomi daerah", "Sentralisasi", "Federalisasi", "Dekonsentrasi"],
+            ["Penyerahan urusan pemerintahan dari pemerintah pusat kepada daerah otonom disebut...", "Desentralisasi", "Sentralisasi", "Dekonsentrasi", "Tugas pembantuan"],
+            ["Kepala pemerintahan daerah tingkat provinsi disebut...", "Gubernur", "Bupati", "Wali kota", "Camat"],
+            ["Kepala pemerintahan daerah tingkat kabupaten disebut...", "Bupati", "Gubernur", "Wali kota", "Lurah"],
+            ["Salah satu tujuan otonomi daerah adalah...", "Meningkatkan pelayanan dan kesejahteraan masyarakat daerah", "Memisahkan daerah dari negara", "Menghapus peran pemerintah pusat", "Membentuk negara bagian"],
+            ["Wawasan Nusantara adalah cara pandang bangsa Indonesia mengenai...", "Diri dan lingkungannya berdasarkan Pancasila dan UUD 1945", "Hubungan dengan negara tetangga saja", "Wilayah daratan saja", "Sejarah kerajaan nusantara"],
+            ["Deklarasi Djuanda dicetuskan pada tanggal...", "13 Desember 1957", "17 Agustus 1945", "28 Oktober 1928", "1 Juni 1945"],
+            ["Lebar laut teritorial Indonesia diukur dari garis pangkal sejauh...", "12 mil laut", "200 mil laut", "3 mil laut", "50 mil laut"],
+            ["Lebar Zona Ekonomi Eksklusif (ZEE) Indonesia diukur dari garis pangkal sejauh...", "200 mil laut", "12 mil laut", "100 mil laut", "350 mil laut"],
+            ["Ketahanan nasional Indonesia terdiri atas delapan aspek yang disebut...", "Asta Gatra", "Panca Gatra", "Tri Gatra", "Dasa Gatra"],
+            ["Aspek alamiah (Tri Gatra) dalam ketahanan nasional meliputi...", "Geografi, kekayaan alam, dan kependudukan", "Ideologi, politik, dan ekonomi", "Sosial budaya, pertahanan, dan keamanan", "Politik, hukum, dan ekonomi"],
+            ["Aspek sosial dalam ketahanan nasional (Panca Gatra) meliputi...", "Ideologi, politik, ekonomi, sosial budaya, dan pertahanan keamanan", "Geografi, demografi, dan sumber daya alam", "Kesehatan, pendidikan, dan olahraga", "Agama, budaya, dan adat"],
+
+            // ===== HAM, Hak & Kewajiban, Kewarganegaraan =====
+            ["Hak asasi manusia adalah hak dasar yang dimiliki manusia sejak...", "Lahir sebagai anugerah Tuhan", "Dewasa", "Diberikan oleh negara", "Memiliki pekerjaan"],
+            ["Undang-undang yang mengatur tentang Hak Asasi Manusia di Indonesia adalah UU Nomor...", "39 Tahun 1999", "12 Tahun 2011", "30 Tahun 2002", "20 Tahun 2003"],
+            ["Deklarasi Universal Hak Asasi Manusia (DUHAM) diumumkan oleh PBB pada tanggal...", "10 Desember 1948", "24 Oktober 1945", "17 Agustus 1945", "1 Januari 1950"],
+            ["Lembaga negara yang bertugas memajukan dan melindungi HAM di Indonesia adalah...", "Komnas HAM", "KPK", "Komisi Yudisial", "BPK"],
+            ["Contoh hak warga negara dalam bidang pendidikan adalah...", "Memperoleh pengajaran yang layak", "Membayar pajak", "Menaati hukum", "Ikut bela negara"],
+            ["Contoh kewajiban warga negara terhadap negara adalah...", "Membayar pajak", "Memperoleh pekerjaan", "Mendapat pendidikan", "Berpendapat"],
+            ["Hak dan kewajiban warga negara harus dilaksanakan secara...", "Seimbang", "Bebas tanpa batas", "Hak lebih dahulu", "Kewajiban saja"],
+            ["Contoh pelanggaran hak asasi manusia adalah...", "Penyiksaan terhadap tahanan", "Menghormati pendapat orang lain", "Memberikan bantuan kepada korban bencana", "Mengikuti pemilu"],
+            ["Kebebasan berpendapat harus dilakukan dengan...", "Bertanggung jawab dan menghormati hak orang lain", "Bebas tanpa batasan", "Menghina pihak lain", "Memaksakan kehendak"],
+            ["Penduduk Indonesia yang bukan warga negara Indonesia disebut...", "Orang asing", "Warga negara", "Penduduk asli", "Rakyat"],
+            ["Penentuan kewarganegaraan berdasarkan tempat kelahiran disebut asas...", "Ius soli", "Ius sanguinis", "Naturalisasi", "Repatriasi"],
+            ["Penentuan kewarganegaraan berdasarkan keturunan atau darah disebut asas...", "Ius sanguinis", "Ius soli", "Apatride", "Bipatride"],
+            ["Seseorang yang tidak memiliki kewarganegaraan disebut...", "Apatride", "Bipatride", "Multipatride", "Naturalisasi"],
+            ["Seseorang yang memiliki dua kewarganegaraan disebut...", "Bipatride", "Apatride", "Naturalisasi", "Repatriasi"],
+            ["Pewarganegaraan bagi orang asing yang memenuhi syarat menjadi WNI disebut...", "Naturalisasi", "Emigrasi", "Imigrasi", "Deportasi"],
+            ["Pungutan wajib dari rakyat kepada negara yang digunakan untuk kepentingan umum disebut...", "Pajak", "Retribusi", "Donasi", "Denda"],
+
+            // ===== Norma & Hukum =====
+            ["Norma yang bersumber dari ajaran Tuhan dan dimuat dalam kitab suci adalah norma...", "Agama", "Kesusilaan", "Kesopanan", "Hukum"],
+            ["Norma yang bersumber dari hati nurani manusia disebut norma...", "Kesusilaan", "Agama", "Kesopanan", "Hukum"],
+            ["Norma yang bersumber dari kebiasaan atau pergaulan hidup masyarakat disebut norma...", "Kesopanan", "Agama", "Kesusilaan", "Hukum"],
+            ["Norma yang sanksinya tegas dan dilaksanakan oleh aparat negara adalah norma...", "Hukum", "Kesopanan", "Kesusilaan", "Agama"],
+            ["Contoh pelanggaran norma kesopanan adalah...", "Berbicara kasar kepada orang yang lebih tua", "Mencuri barang orang lain", "Tidak membayar pajak", "Melanggar rambu lalu lintas"],
+            ["Hukum yang mengatur kejahatan dan pelanggaran serta sanksinya disebut hukum...", "Pidana", "Perdata", "Tata negara", "Internasional"],
+            ["Hukum yang mengatur hubungan antarindividu seperti jual beli dan warisan disebut hukum...", "Perdata", "Pidana", "Administrasi negara", "Pajak"],
+            ["Asas bahwa setiap orang dianggap tidak bersalah sampai ada putusan pengadilan yang tetap disebut asas...", "Praduga tak bersalah", "Legalitas", "Retroaktif", "Persamaan di muka hukum"],
+            ["Salah satu tujuan adanya hukum adalah...", "Menciptakan ketertiban dan keadilan", "Membatasi kebebasan rakyat", "Memberikan keuntungan bagi penguasa", "Menghukum semua orang"],
+            ["Prinsip bahwa hukum memiliki kedudukan tertinggi dalam penyelenggaraan negara disebut...", "Supremasi hukum", "Kedaulatan rakyat", "Desentralisasi", "Otonomi"],
+            ["Konstitusi adalah...", "Hukum dasar tertinggi yang mengatur penyelenggaraan negara", "Peraturan desa", "Perjanjian internasional", "Aturan sekolah"],
+
+            // ===== Antikorupsi, Bela Negara & Persatuan =====
+            ["Lembaga independen yang dibentuk untuk memberantas tindak pidana korupsi di Indonesia adalah...", "Komisi Pemberantasan Korupsi (KPK)", "Komnas HAM", "Bawaslu", "Ombudsman"],
+            ["Korupsi adalah penyalahgunaan kekuasaan atau wewenang untuk...", "Keuntungan pribadi atau kelompok", "Kepentingan umum", "Kesejahteraan rakyat", "Pembangunan daerah"],
+            ["Contoh sikap antikorupsi di lingkungan sekolah adalah...", "Jujur saat ujian dan tidak menyontek", "Menyontek saat ujian", "Memalsukan tanda tangan", "Menitipkan absen pada teman"],
+            ["Sikap dan perilaku warga negara yang dijiwai cinta tanah air untuk menjaga kelangsungan hidup bangsa disebut...", "Bela negara", "Kolonialisme", "Separatisme", "Globalisasi"],
+            ["Sistem pertahanan dan keamanan Indonesia yang melibatkan seluruh rakyat disebut...", "Sishankamrata", "Sistem federal", "Wajib militer", "Pertahanan asing"],
+            ["Tugas pokok Tentara Nasional Indonesia (TNI) adalah...", "Menjaga kedaulatan dan pertahanan negara", "Menegakkan hukum lalu lintas", "Mengadili perkara", "Menyelenggarakan pemilu"],
+            ["Tugas pokok Kepolisian Negara Republik Indonesia (Polri) adalah...", "Memelihara keamanan dan ketertiban masyarakat", "Menjaga perbatasan dari serangan militer", "Membuat undang-undang", "Memeriksa keuangan negara"],
+            ["Contoh bela negara di lingkungan sekolah adalah...", "Mengikuti upacara bendera dengan khidmat", "Bolos saat upacara", "Merusak fasilitas sekolah", "Mencoret-coret dinding"],
+            ["Peredaran narkoba merupakan bentuk ancaman terhadap bangsa di bidang...", "Sosial dan keamanan", "Ideologi komunis", "Pertahanan laut", "Perdagangan internasional"],
+            ["Sikap fanatik berlebihan terhadap suku atau kelompoknya sendiri yang dapat menghambat persatuan disebut...", "Etnosentrisme", "Nasionalisme", "Patriotisme", "Toleransi"],
+            ["Sikap saling menghargai perbedaan pendapat dan keyakinan disebut...", "Toleransi", "Egoisme", "Diskriminasi", "Primordialisme"],
+            ["Kerja sama untuk menyelesaikan pekerjaan secara bersama-sama tanpa pamrih disebut...", "Gotong royong", "Individualisme", "Kompetisi", "Monopoli"],
+            ["Sikap bijak dalam bermedia sosial yang sesuai nilai Pancasila adalah...", "Menyaring informasi sebelum menyebarkannya", "Menyebarkan berita tanpa memeriksa kebenaran", "Menghina orang lain di kolom komentar", "Membuat akun palsu untuk menipu"],
+            ["Dampak negatif globalisasi bagi remaja adalah...", "Gaya hidup konsumtif dan individualistis", "Mudah mengakses ilmu pengetahuan", "Meluasnya kerja sama internasional", "Meningkatnya kualitas teknologi"],
+
+            // ===== Hubungan Internasional =====
+            ["Politik luar negeri Indonesia menganut prinsip...", "Bebas aktif", "Netral pasif", "Berpihak pada blok Barat", "Berpihak pada blok Timur"],
+            ["Tokoh yang menyampaikan gagasan politik luar negeri bebas aktif dengan pidato 'Mendayung di antara Dua Karang' adalah...", "Mohammad Hatta", "Ir. Soekarno", "Sutan Syahrir", "Adam Malik"],
+            ["Konferensi Asia Afrika (KAA) pertama diselenggarakan pada tahun 1955 di kota...", "Bandung", "Jakarta", "Surabaya", "Yogyakarta"],
+            ["ASEAN didirikan pada tanggal 8 Agustus 1967 di kota...", "Bangkok", "Jakarta", "Manila", "Singapura"],
+            ["Sekretariat ASEAN berkedudukan di kota...", "Jakarta", "Bangkok", "Kuala Lumpur", "Singapura"],
+            ["Perserikatan Bangsa-Bangsa (PBB) berdiri pada tanggal...", "24 Oktober 1945", "10 Desember 1948", "17 Agustus 1945", "28 September 1950"],
+            ["Koperasi sebagai sokoguru perekonomian Indonesia sesuai dengan Pasal...", "33 UUD 1945", "27 UUD 1945", "30 UUD 1945", "36 UUD 1945"],
+            ["Tokoh yang dijuluki Bapak Koperasi Indonesia adalah...", "Mohammad Hatta", "Ir. Soekarno", "Ki Hajar Dewantara", "R.A. Kartini"],
+        ];
+
+        $this->pastikanJumlah('PKn', $soalPKn);
+        $this->simpanSoalDanJawaban($pkn->id, $soalPKn);
+        $this->command->info("✓ Pendidikan Kewarganegaraan: " . count($soalPKn) . " soal berhasil disimpan.");
+    }
+
+    /**
+     * 5. Bahasa Inggris
+     */
+    private function seedBahasaInggris(): void
+    {
+        $inggris = Subject::factory()->create([
+            'name' => 'Bahasa Inggris',
+            'description' => 'Mata Pelajaran Bahasa Inggris (Tenses, Modal, Conditional, Passive Voice, Reported Speech, Vocabulary, Expressions, Text Types, Reading)',
+            'is_active' => true,
+        ]);
+
+        // Format: [pertanyaan, jawaban benar, salah 1, salah 2, salah 3]
+        $soalInggris = [
+            // ===== Tenses =====
+            ["She ___ to school every day.", "goes", "go", "going", "gone"],
+            ["They ___ football in the field now.", "are playing", "play", "played", "plays"],
+            ["I ___ my homework yesterday afternoon.", "finished", "finish", "finishes", "finishing"],
+            ["He ___ in Medan since 2015.", "has lived", "lives", "lived", "is living"],
+            ["We ___ to the market tomorrow morning.", "will go", "went", "have gone", "gone"],
+            ["While I ___ TV, the phone rang.", "was watching", "watched", "watch", "am watching"],
+            ["By the time we arrived, the movie ___.", "had started", "started", "has started", "starts"],
+            ["She has just ___ her lunch.", "eaten", "ate", "eat", "eating"],
+            ["My father ___ a newspaper every morning.", "reads", "read", "reading", "is read"],
+            ["Look! The baby ___.", "is crying", "cries", "cried", "has cry"],
+            ["They ___ for the bus for two hours.", "have been waiting", "are waiting", "waited", "wait"],
+            ["The sun ___ in the east.", "rises", "rise", "rose", "is rising"],
+            ["Water ___ at 100 degrees Celsius.", "boils", "boil", "boiled", "is boiling"],
+            ["I have never ___ sushi before.", "eaten", "eat", "ate", "eating"],
+            ["Rina ___ her teeth twice a day.", "brushes", "brush", "brushing", "brushed"],
+            ["Next June, we ___ English for three years.", "will have studied", "have studied", "studied", "study"],
+            ["When I was a child, I ___ swim in the river every Sunday.", "used to", "use to", "am used to", "was used"],
+            ["My mother ___ dinner when I came home last night.", "was cooking", "cooks", "has cooked", "cook"],
+            ["Past tense of the verb 'go' is...", "went", "goed", "gone", "going"],
+            ["Past participle of the verb 'write' is...", "written", "wrote", "writed", "writing"],
+            ["Past tense of the verb 'buy' is...", "bought", "buyed", "boughten", "buys"],
+            ["Past participle of the verb 'see' is...", "seen", "saw", "seed", "seeing"],
+            ["Past tense of the verb 'teach' is...", "taught", "teached", "tought", "teaches"],
+
+            // ===== To Be & Auxiliary =====
+            ["My mother ___ a teacher.", "is", "am", "are", "be"],
+            ["There ___ a cat under the chair.", "is", "are", "were", "be"],
+            ["___ you at home last night?", "Were", "Was", "Are", "Did"],
+            ["Those boys ___ my cousins.", "are", "is", "am", "was"],
+            ["___ your brother like fried rice?", "Does", "Do", "Is", "Are"],
+
+            // ===== Modals =====
+            ["You ___ wear a helmet when riding a motorbike.", "must", "might", "would", "could"],
+            ["___ I borrow your pen, please?", "May", "Must", "Need", "Ought"],
+            ["She ___ swim when she was five years old.", "could", "can", "must", "should"],
+            ["You ___ smoke in the hospital. It is forbidden.", "must not", "need not", "may", "should"],
+            ["Tomorrow is a holiday, so you ___ come to school.", "don't have to", "mustn't", "can't", "shouldn't"],
+
+            // ===== Conditional =====
+            ["If it rains tomorrow, we ___ at home.", "will stay", "stayed", "would stay", "stay"],
+            ["If I were rich, I ___ buy a big house.", "would", "will", "am", "have"],
+            ["If she had studied harder, she ___ the exam.", "would have passed", "would pass", "will pass", "passed"],
+
+            // ===== Articles, Prepositions, Pronouns =====
+            ["She is ___ honest girl.", "an", "a", "the", "some"],
+            ["He wants to be ___ engineer.", "an", "a", "the", "any"],
+            ["___ sun rises in the east.", "The", "A", "An", "Some"],
+            ["I was born ___ 2008.", "in", "on", "at", "by"],
+            ["The meeting starts ___ 9 a.m.", "at", "in", "on", "for"],
+            ["My birthday is ___ 14 October.", "on", "in", "at", "by"],
+            ["He is very good ___ mathematics.", "at", "in", "on", "with"],
+            ["She is afraid ___ spiders.", "of", "from", "at", "with"],
+            ["We have lived here ___ 2010.", "since", "for", "during", "from"],
+            ["He has been waiting ___ two hours.", "for", "since", "at", "in"],
+            ["The cat is hiding ___ the sofa and the wall.", "between", "among", "in", "at"],
+            ["My sister and ___ went to the cinema yesterday.", "I", "me", "my", "mine"],
+            ["This bag is not yours. It is ___.", "mine", "my", "me", "I"],
+            ["She hurt ___ while cooking.", "herself", "himself", "itself", "themselves"],
+            ["Where are the students? ___ shoes are in front of the class.", "Their", "They", "Them", "Theirs"],
+            ["I saw John yesterday. I talked to ___.", "him", "he", "his", "himself"],
+            ["The teacher gave ___ a gift on Teachers' Day.", "us", "we", "our", "ours"],
+
+            // ===== Comparison =====
+            ["Mount Everest is ___ mountain in the world.", "the highest", "higher", "highest", "more high"],
+            ["My bag is ___ than yours.", "heavier", "heavy", "heaviest", "more heavy"],
+            ["This exam is ___ than the last one.", "more difficult", "most difficult", "difficulter", "the more difficult"],
+            ["She is as ___ as her mother.", "tall", "taller", "tallest", "more tall"],
+            ["Of all the students in my class, Rani is ___.", "the most diligent", "more diligent", "diligenter", "the more diligent"],
+            ["Good - better - ___.", "best", "goodest", "most good", "well"],
+
+            // ===== Passive Voice =====
+            ["The window ___ by Tom yesterday.", "was broken", "broke", "is broken", "has broke"],
+            ["English ___ in many countries.", "is spoken", "speaks", "spoke", "speaking"],
+            ["The letter ___ by her tomorrow.", "will be sent", "will send", "sent", "is send"],
+            ["A new bridge ___ in my town now.", "is being built", "builds", "was built", "has build"],
+            ["'They clean the room every day.' The passive form is...", "The room is cleaned every day.", "The room cleans every day.", "The room was cleaned every day.", "The room is cleaning every day."],
+
+            // ===== Reported Speech =====
+            ["She said, 'I am hungry.' = She said that she ___ hungry.", "was", "is", "were", "has been"],
+            ["He said, 'I will come tomorrow.' = He said that he ___ the next day.", "would come", "will come", "came", "comes"],
+            ["'Where do you live?' he asked me. = He asked me where I ___.", "lived", "live", "do live", "living"],
+
+            // ===== Gerund & Infinitive =====
+            ["She enjoys ___ novels in her free time.", "reading", "to read", "read", "reads"],
+            ["He decided ___ abroad after graduating.", "to study", "studying", "study", "studied"],
+            ["I look forward to ___ you next week.", "seeing", "see", "seen", "to see"],
+            ["She is too tired ___ anymore.", "to walk", "walking", "walk", "walked"],
+            ["My hobby is ___ pictures.", "drawing", "draw", "drew", "draws"],
+
+            // ===== Question Tag, Relative Clause, Conjunction =====
+            ["You are a student, ___?", "aren't you", "are you", "don't you", "isn't you"],
+            ["She doesn't like coffee, ___?", "does she", "doesn't she", "is she", "do she"],
+            ["Let's go to the library, ___?", "shall we", "will we", "don't we", "do we"],
+            ["The man ___ lives next door is a doctor.", "who", "which", "whose", "where"],
+            ["This is the book ___ I bought yesterday.", "which", "who", "whose", "where"],
+            ["The girl ___ bag was stolen is crying.", "whose", "who", "which", "whom"],
+            ["That is the school ___ I studied for six years.", "where", "who", "whose", "whom"],
+            ["He kept working ___ he was very tired.", "although", "because", "so that", "therefore"],
+            ["It rained heavily, ___ we stayed at home.", "so", "because", "but", "although"],
+            ["She failed the test ___ she did not study.", "because", "so", "but", "therefore"],
+            ["___ he is rich, he is not happy.", "Although", "Because", "So", "Since"],
+            ["We must hurry, ___ we will miss the bus.", "or", "and", "but", "so"],
+
+            // ===== Synonym & Antonym =====
+            ["The synonym of 'big' is...", "large", "tiny", "thin", "narrow"],
+            ["The synonym of 'begin' is...", "start", "finish", "stop", "end"],
+            ["The synonym of 'buy' is...", "purchase", "sell", "borrow", "lend"],
+            ["The antonym of 'difficult' is...", "easy", "hard", "tough", "complex"],
+            ["The antonym of 'ancient' is...", "modern", "old", "antique", "historic"],
+            ["The antonym of 'generous' is...", "stingy", "kind", "rich", "helpful"],
+            ["The synonym of 'rapid' is...", "fast", "slow", "late", "steady"],
+            ["The synonym of 'assist' is...", "help", "disturb", "prevent", "refuse"],
+            ["The antonym of 'accept' is...", "reject", "receive", "take", "agree"],
+            ["The synonym of 'enormous' is...", "huge", "small", "light", "short"],
+            ["The antonym of 'brave' is...", "cowardly", "strong", "bold", "fearless"],
+            ["The synonym of 'ill' is...", "sick", "healthy", "strong", "fit"],
+            ["The antonym of 'expensive' is...", "cheap", "costly", "valuable", "pricey"],
+            ["The synonym of 'intelligent' is...", "clever", "foolish", "lazy", "careless"],
+            ["The antonym of 'arrive' is...", "depart", "reach", "come", "enter"],
+            ["The synonym of 'silent' is...", "quiet", "loud", "noisy", "crowded"],
+            ["The antonym of 'diligent' is...", "lazy", "hard-working", "active", "tidy"],
+
+            // ===== Vocabulary & Word Forms =====
+            ["A person who teaches students at school is a...", "teacher", "farmer", "pilot", "driver"],
+            ["A place where we borrow books is a...", "library", "bakery", "market", "station"],
+            ["A person who cooks food in a restaurant is a...", "chef", "farmer", "pilot", "tailor"],
+            ["We use ___ to cut paper.", "scissors", "a spoon", "a fork", "a hammer"],
+            ["Which word is a noun?", "happiness", "happily", "happy", "happier"],
+            ["Which word is an adjective?", "beautiful", "beauty", "beautifully", "beautify"],
+            ["Which word is an adverb?", "carefully", "careful", "care", "careless"],
+            ["The plural form of 'child' is...", "children", "childs", "childes", "childrens"],
+            ["The plural form of 'tooth' is...", "teeth", "tooths", "teeths", "toothes"],
+            ["The plural form of 'woman' is...", "women", "womans", "womens", "womanes"],
+            ["Which spelling is correct?", "necessary", "neccessary", "necesary", "necessery"],
+            ["Which spelling is correct?", "receive", "recieve", "receeve", "recive"],
+
+            // ===== Expressions =====
+            ["A: 'Thank you very much for your help.' B: '...'", "You're welcome.", "I'm sorry.", "Good luck.", "See you."],
+            ["A: 'Congratulations on your graduation!' B: '...'", "Thank you.", "I'm sorry to hear that.", "Never mind.", "Good morning."],
+            ["A: 'I'm sorry I'm late.' B: '...'", "That's all right.", "You're welcome.", "Same to you.", "Congratulations."],
+            ["A: 'Would you like some tea?' B: '...'", "Yes, please.", "You're welcome.", "I'm fine, thanks.", "Good night."],
+            ["A: 'Good luck on your test tomorrow!' B: '...'", "Thanks.", "I'm sorry.", "Excuse me.", "Never mind."],
+            ["A: 'My grandmother is sick in the hospital.' B: '...'", "I'm sorry to hear that.", "Congratulations!", "Well done!", "Happy birthday!"],
+            ["A: 'Would you like to come to my birthday party?' B: '...'", "Sure, I'd love to.", "You're welcome.", "Never mind.", "It doesn't matter."],
+            ["Excuse me, ___ I come in?", "may", "will", "do", "are"],
+            ["___ go to the beach this Sunday?", "Why don't we", "Why we", "How about we to", "Don't we"],
+            ["The sign 'Keep off the grass' means...", "Do not walk on the grass.", "Please cut the grass.", "Plant more grass here.", "Give water to the grass."],
+            ["The sign 'No Parking' means...", "You may not park your vehicle here.", "You may park here freely.", "Parking is free.", "Park only at night."],
+            ["The sign 'Beware of the dog' means...", "Be careful, the dog may bite.", "Please feed the dog.", "Dogs are for sale.", "Dogs are welcome."],
+            ["The sign 'Wet paint' means...", "Do not touch it, the paint is not dry yet.", "Please paint the wall.", "Water is available here.", "Paint is for sale."],
+            ["The label 'Fragile' on a box means...", "Handle with care because it can easily break.", "The box is very heavy.", "The box contains food.", "Throw the box away."],
+
+            // ===== Text Types =====
+            ["A text that tells past events in chronological order is called...", "Recount text", "Procedure text", "Descriptive text", "Report text"],
+            ["The social function of a narrative text is to...", "Entertain the readers with a story", "Explain how to make something", "Describe a thing", "Persuade the readers to buy"],
+            ["The generic structure of a narrative text is...", "Orientation, complication, resolution", "Goal, materials, steps", "Identification, description", "General classification, description"],
+            ["The purpose of a procedure text is to...", "Tell how to make or do something", "Tell a fairy tale", "Describe a person", "Report news"],
+            ["The purpose of a descriptive text is to...", "Describe a particular person, place, or thing", "Tell past experiences", "Give instructions", "Entertain with a story"],
+            ["The words 'first, then, next, finally' are commonly found in...", "Procedure text", "Narrative text", "Descriptive text", "Announcement"],
+            ["The phrase 'Once upon a time' usually appears in...", "Narrative text", "Procedure text", "Report text", "Advertisement"],
+            ["An invitation card usually contains...", "Time, place, and event", "Steps and materials", "Complication and resolution", "Ingredients"],
+
+            // ===== Reading Comprehension =====
+            ["Rina has a pet cat named Mimi. Mimi is white and very fluffy. She likes to sleep on the sofa.\n\nWhat does Mimi like to do?", "Sleep on the sofa", "Play outside", "Eat fish", "Chase mice"],
+            ["Budi gets up at 5 a.m. every day. He prays, takes a shower, and has breakfast before going to school.\n\nWhat does Budi do after praying?", "Takes a shower", "Has breakfast", "Goes to school", "Gets up"],
+            ["Lake Toba is the largest volcanic lake in the world. It is located in North Sumatra. Many tourists visit it every year.\n\nWhere is Lake Toba located?", "North Sumatra", "West Java", "Bali", "Central Sulawesi"],
+            ["A: Where is Mr. Dani?\nB: He is in the teachers' room.\n\nThe word 'He' refers to...", "Mr. Dani", "The teacher", "The student", "The speaker"],
+            ["Dina bought a new dress yesterday. She wore it to her friend's birthday party and everyone said it was beautiful.\n\nWhen did Dina buy the dress?", "Yesterday", "Today", "Tomorrow", "Last year"],
+            ["Ani wants to bake a cake. First, she mixes flour, eggs, and sugar. Then she pours the mixture into a pan. Finally, she bakes it in the oven.\n\nWhat does Ani do after mixing the ingredients?", "Pours the mixture into a pan", "Bakes the cake", "Buys flour", "Eats the cake"],
+            ["The word 'tiny' in the sentence 'The ant is tiny' means...", "Very small", "Very big", "Very fast", "Very strong"],
+            ["I live in a small house near the beach. Every morning, I walk along the shore and collect shells.\n\nWhat does the writer do every morning?", "Walks along the shore", "Goes to school", "Swims in the sea", "Sells shells"],
+            ["Tom is taller than Andi, but Andi is taller than Rudi.\n\nWho is the shortest?", "Rudi", "Tom", "Andi", "Nobody"],
+            ["Sinta was very happy because she got the first prize in the speech contest.\n\nWhy was Sinta happy?", "She won the speech contest", "She got a new bag", "She went on holiday", "She met her idol"],
+            ["Doni usually rides a bicycle to school, but today it is raining, so he takes a bus.\n\nHow does Doni go to school today?", "By bus", "By bicycle", "On foot", "By motorbike"],
+            ["Mrs. Lina is a nurse. She works at a hospital and helps sick people every day.\n\nWhat does Mrs. Lina do?", "She helps sick people", "She teaches students", "She sells medicine", "She cooks for patients"],
+            ["The antonym of 'noisy' is...", "quiet", "loud", "busy", "crowded"],
+            ["He ___ his car every Sunday morning.", "washes", "wash", "washing", "washed"],
+            ["I will call you if I ___ free tomorrow.", "am", "will be", "was", "would be"],
+        ];
+
+        $this->pastikanJumlah('Bahasa Inggris', $soalInggris);
+        $this->simpanSoalDanJawaban($inggris->id, $soalInggris);
+        $this->command->info("✓ Bahasa Inggris: " . count($soalInggris) . " soal berhasil disimpan.");
+    }
+
+    /**
+     * Pastikan jumlah soal tepat 150 per mata pelajaran.
+     */
+    private function pastikanJumlah(string $nama, array $daftarSoal): void
+    {
+        $jumlah = count($daftarSoal);
+
+        if ($jumlah !== 150) {
+            throw new \RuntimeException("Jumlah soal {$nama} harus 150, saat ini {$jumlah}.");
+        }
+    }
+
+    /**
+     * Simpan soal beserta pilihan jawabannya.
      */
     private function simpanSoalDanJawaban(int $subjectId, array $daftarSoal): void
     {
         $optionsList = ['A', 'B', 'C', 'D'];
 
         foreach ($daftarSoal as $item) {
-            // 
             $pilihan = [
                 ['text' => $item[1], 'is_correct' => true],
                 ['text' => $item[2], 'is_correct' => false],

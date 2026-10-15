@@ -19,12 +19,12 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::updateOrCreate(
-            ['email' => 'skylast@gmail.com'],
+            ['email' => 'septinaqimerdi23@gmail.com'],
             [
-                'name' => 'M. Arifin',
+                'name' => 'Septina Surbakti',
                 'username' => 'skylast',
                 'is_staff' => true,
-                'password' => Hash::make('skylast123_')
+                'password' => Hash::make('septi123')
             ]
         );
 
